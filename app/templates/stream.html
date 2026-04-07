@@ -1,0 +1,48 @@
+<!-- app/templates/stream.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ movie.title }} - HomeStream</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #121212; color: #eee; margin: 0; padding: 0; text-align: center; }
+        header { background: #1f1f1f; padding: 20px; font-size: 2em; }
+        .video-container { margin: 30px auto; max-width: 800px; }
+        video { width: 100%; height: auto; border-radius: 10px; background: #000; }
+        .controls { margin: 20px; }
+        a, select { font-size: 1em; padding: 10px; margin: 5px; border-radius: 5px; text-decoration: none; }
+        a { background: #2a2a2a; color: #fff; }
+        select { background: #1f1f1f; color: #fff; border: 1px solid #333; }
+    </style>
+</head>
+<body>
+    <header>{{ movie.title }}</header>
+
+    <div class="controls">
+        <a href="/">← Back to Home</a>
+        <label for="format">Format:</label>
+        <select id="format" onchange="switchFormat(this.value)">
+            {% for fmt in available_formats %}
+            <option value="{{ fmt }}" {% if fmt == video_src.split('=')[-1] %}selected{% endif %}>{{ fmt }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="video-container">
+        <video id="player" controls autoplay>
+            <source src="{{ video_src }}" type="video/{{ video_src.split('=')[-1] }}">
+            Your browser does not support HTML5 video.
+        </video>
+    </div>
+
+    <script>
+        function switchFormat(fmt) {
+            const player = document.getElementById('player');
+            const movieId = {{ movie.id }};
+            player.src = `/stream-file/${movieId}?format=${fmt}`;
+            player.load();
+            player.play();
+        }
+    </script>
+</body>
+</html>

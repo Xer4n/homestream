@@ -1,0 +1,28 @@
+<!-- app/templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HomeStream - Movie Catalog</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #121212; color: #eee; margin: 0; padding: 0; }
+        header { background: #1f1f1f; padding: 20px; text-align: center; font-size: 2em; }
+        main { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .movie-card { background: #1f1f1f; padding: 15px; border-radius: 10px; text-align: center; transition: transform 0.2s; cursor: pointer; }
+        .movie-card:hover { transform: scale(1.05); background: #2a2a2a; }
+        a { text-decoration: none; color: #fff; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>HomeStream</header>
+    <main>
+        {% for movie in movies %}
+            <div class="movie-card">
+                <a href="/stream/{{ movie.id }}">{{ movie.title }}</a>
+            </div>
+        {% else %}
+            <p>No movies found. Add some to your movies folder!</p>
+        {% endfor %}
+    </main>
+</body>
+</html>
