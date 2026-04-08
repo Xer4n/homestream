@@ -3,26 +3,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomeStream - Movie Catalog</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #121212; color: #eee; margin: 0; padding: 0; }
-        header { background: #1f1f1f; padding: 20px; text-align: center; font-size: 2em; }
-        main { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .movie-card { background: #1f1f1f; padding: 15px; border-radius: 10px; text-align: center; transition: transform 0.2s; cursor: pointer; }
-        .movie-card:hover { transform: scale(1.05); background: #2a2a2a; }
-        a { text-decoration: none; color: #fff; font-weight: bold; }
-    </style>
+    <link rel="stylesheet" href="/static/styles/style.css">
 </head>
 <body>
-    <header>HomeStream</header>
-    <main>
-        {% for movie in movies %}
-            <div class="movie-card">
-                <a href="/stream/{{ movie.id }}">{{ movie.title }}</a>
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <div class="logo">HS</div>
+                <div class="brand-text">
+                    <h1>HomeStream</h1>
+                    <span>Your private streaming library</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-box">
+            <h2>Your movies, <span class="hero-accent">streamed simply</span>.</h2>
+            <p>I love Harry Potter</p>
+        </div>
+    </section>
+
+    <main class="content">
+        <div class="section-title">
+            <h3>Movie Catalog</h3>
+            <span>{{ movies|length if movies else 0 }} titles</span>
+        </div>
+
+        {% if movies %}
+            <div class="movie-grid">
+                {% for movie in movies %}
+                    <a href="/stream/{{ movie.id }}" class="movie-card">
+                        <div class="movie-thumb">
+                            {{ movie.title[:1] }}
+                        </div>
+                        <div class="movie-info">
+                            <div class="movie-title">{{ movie.title }}</div>
+                            <div class="movie-meta">Click to watch</div>
+                        </div>
+                    </a>
+                {% endfor %}
             </div>
         {% else %}
-            <p>No movies found. Add some to your movies folder!</p>
-        {% endfor %}
+            <div class="empty-state">
+                <h3>No movies found</h3>
+                <p>Add some files to your movies folder and they’ll appear here.</p>
+            </div>
+        {% endif %}
     </main>
+
+    <footer class="site-footer">
+        HomeStream • Personal Media Server
+    </footer>
 </body>
 </html>

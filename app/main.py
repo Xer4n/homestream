@@ -2,6 +2,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from app.services.scanner import scan_and_update_db
 from app.api import movies as movies_router
 
@@ -9,6 +10,7 @@ app = FastAPI(title="HomeStream")
 
 # Templates folder
 templates = Jinja2Templates(directory="app/templates")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # Include API router
 app.include_router(movies_router.router)
@@ -20,7 +22,6 @@ async def homepage(request: Request):
     """
     # Fetch movies from DB
     movies = await scan_and_update_db()
-    print(movies)
 
     # Convert to plain dicts
     movies = [{"id": m["id"], "title": m["title"]} for m in movies]
